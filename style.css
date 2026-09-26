@@ -1,0 +1,63 @@
+
+:root{
+  --gold:#c9a24b;
+  --gold-light:#f0d58a;
+  --black:#080807;
+  --brown:#17130d;
+  --cream:#f3eee4;
+  --muted:#b8b1a5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Georgia,"Times New Roman",serif;background:var(--black);color:var(--cream);line-height:1.6}
+a{color:inherit;text-decoration:none}
+.container{width:min(1180px,92%);margin:auto}
+.topbar{border-bottom:1px solid rgba(201,162,75,.35);background:#050504}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:9px 0;font:12px/1 Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;color:#cfc8bc}
+header{position:sticky;top:0;z-index:20;background:rgba(8,8,7,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,162,75,.25)}
+.nav{display:flex;align-items:center;justify-content:space-between;min-height:82px}
+.brand img{width:145px;display:block}
+nav{display:flex;gap:28px;align-items:center;font:13px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
+nav a{color:#eee8dd;transition:.2s}
+nav a:hover,nav a.active{color:var(--gold-light)}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--gold);padding:13px 22px;background:linear-gradient(135deg,#b58a34,#e4c36c);color:#111;font:bold 12px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
+.btn.outline{background:transparent;color:var(--gold-light)}
+.hero{min-height:76vh;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background:
+radial-gradient(circle at center,rgba(112,79,24,.22),transparent 42%),
+linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.82)),
+url("../assets/logo.png") center/680px auto no-repeat;}
+.hero-content{padding:120px 20px 90px}
+.kicker{font:12px Arial,sans-serif;letter-spacing:6px;color:var(--gold-light);text-transform:uppercase;margin-bottom:18px}
+h1{font-size:clamp(48px,8vw,100px);line-height:.9;letter-spacing:4px;text-transform:uppercase}
+h1 span{color:var(--gold)}
+.hero p{max-width:680px;margin:28px auto;color:#d5cfc4;font-size:18px}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+section{padding:90px 0}
+.section-head{text-align:center;margin-bottom:45px}
+.section-head .kicker{margin-bottom:8px}
+.section-head h2{font-size:42px;font-weight:normal;text-transform:uppercase;letter-spacing:3px}
+.section-head p{color:var(--muted);max-width:700px;margin:12px auto}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:linear-gradient(145deg,#18150f,#0d0c09);border:1px solid rgba(201,162,75,.25);padding:30px}
+.card h3{font-size:23px;color:var(--gold-light);margin-bottom:8px}
+.card p{color:var(--muted)}
+.price{font:700 18px Arial,sans-serif;color:var(--gold-light);margin-top:15px}
+.menu-list{display:grid;gap:12px}
+.menu-item{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid rgba(255,255,255,.09);padding:14px 0}
+.menu-item strong{font-size:18px;font-weight:normal}
+.menu-item span{font:700 16px Arial,sans-serif;color:var(--gold-light);white-space:nowrap}
+.banner{background:linear-gradient(90deg,#0b0a08,#211a10,#0b0a08);border-top:1px solid rgba(201,162,75,.3);border-bottom:1px solid rgba(201,162,75,.3);text-align:center;padding:70px 20px}
+footer{border-top:1px solid rgba(201,162,75,.25);padding:45px 0;background:#050504}
+footer .container{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+footer p{color:#8f897f;font:13px Arial,sans-serif}
+.page-hero{padding:100px 0 70px;text-align:center;background:radial-gradient(circle,rgba(126,91,31,.22),transparent 55%)}
+.page-hero h1{font-size:clamp(44px,7vw,76px)}
+form{display:grid;gap:14px;max-width:700px;margin:auto}
+input,textarea,select{width:100%;background:#0f0e0b;border:1px solid rgba(201,162,75,.35);color:#fff;padding:15px;font:15px Arial,sans-serif}
+textarea{min-height:150px;resize:vertical}
+label{font:12px Arial,sans-serif;text-transform:uppercase;letter-spacing:1.5px;color:#bcb4a8}
+.notice{padding:16px;border-left:3px solid var(--gold);background:#15120d;color:#cfc7ba;margin-bottom:25px}
+@media(max-width:850px){
+  nav{display:none}.grid{grid-template-columns:1fr}.hero{background-size:520px auto}
+  .topbar .container{justify-content:center;text-align:center}
+}
