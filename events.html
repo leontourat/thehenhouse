@@ -5,47 +5,507 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Événements — The Hen House</title>
 <link rel="stylesheet" href="style.css">
+<style>
+.calendar-wrap{background:linear-gradient(145deg,#0b0b0a,#12100d);border:1px solid rgba(201,162,75,.24);overflow:hidden}
+.calendar-head{display:flex;align-items:center;justify-content:space-between;padding:22px;border-bottom:1px solid rgba(201,162,75,.2)}
+.calendar-title{font-size:28px;color:#f1dfae;letter-spacing:1px}
+.cal-btn{width:50px;height:40px;border:1px solid rgba(201,162,75,.45);background:#0d0c0a;color:#eee;cursor:pointer;font-size:22px}
+.cal-btn:hover{background:#c9a24b;color:#111}
+.weekdays,.days{display:grid;grid-template-columns:repeat(7,1fr)}
+.weekdays div{text-align:center;padding:14px 5px;font:11px Arial,sans-serif;letter-spacing:1.5px;color:#8ca4c4;text-transform:uppercase;border-bottom:1px solid rgba(201,162,75,.16)}
+.day{min-height:128px;border-right:1px solid rgba(60,75,100,.45);border-bottom:1px solid rgba(60,75,100,.45);padding:10px;position:relative;background:rgba(0,0,0,.2)}
+.day:nth-child(7n){border-right:0}
+.day.muted{color:#555}
+.day-number{font:14px Arial,sans-serif;color:#eee}
+.day.muted .day-number{color:#555}
+.event-chip{display:block;width:100%;margin-top:10px;border:1px solid rgba(201,162,75,.5);background:rgba(201,162,75,.09);padding:7px;cursor:pointer;text-align:left}
+.event-chip:hover{background:rgba(201,162,75,.2)}
+.event-chip img{width:100%;height:58px;object-fit:cover;display:block;margin-bottom:6px}
+.event-name{font:12px Arial,sans-serif;font-weight:700;color:#f2dfac}
+.event-time{font:11px Arial,sans-serif;color:#aaa;margin-top:3px}
+.today{box-shadow:inset 0 0 0 1px rgba(201,162,75,.7)}
+.legend{margin-top:18px;color:#918b82;font:12px Arial,sans-serif}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
+.modal.open{display:flex}
+.modal-box{width:min(620px,100%);background:linear-gradient(145deg,#1a160f,#090806);border:1px solid #c9a24b;padding:30px;box-shadow:0 25px 80px #000}
+.modal-box img{width:100%;max-height:300px;object-fit:cover;margin-bottom:20px}
+.modal-box h3{font-size:32px;color:#f0d58a;margin-bottom:6px}
+.modal-meta{font:13px Arial,sans-serif;color:#bdb5a8;margin-bottom:18px}
+.close-btn{border:1px solid #777;background:transparent;color:#eee;padding:10px 18px;cursor:pointer;text-transform:uppercase;font:bold 11px Arial,sans-serif;letter-spacing:1px}
+@media(max-width:850px){.day{min-height:95px;padding:7px}.event-chip{padding:5px}.event-chip img{height:40px}.event-name{font-size:10px}.calendar-title{font-size:21px}}
+@media(max-width:600px){.weekdays div{font-size:9px}.day{min-height:78px}.event-time{display:none}}
+/* Navigation événements */
+header .nav {
+  justify-content: flex-start;
+}
+
+header .nav nav {
+  margin-right: auto;
+}
+
+header .nav > .btn {
+  margin-left: 12px;
+}
+
+header .nav > .btn + .btn {
+  margin-left: 10px;
+}
+</style>
 </head>
 <body>
-
 <header>
-  <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Hen House"></a>
-    <nav>
-      <a href="index.html">Accueil</a>
-      <a href="menu.html">Carte</a>
-      <a href="events.html">Événements</a>
-      <a href="reservation.html">Réserver</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <a class="btn" href="reservation.html">Réserver une table</a>
-  </div>
+<div class="container nav">
+<a class="brand" href="index.html"><img src="assets/logo.png" alt="The Hen House"></a>
+<nav>
+<a href="index.html">Accueil</a><a href="menu.html">Carte</a><a href="events.html" class="active">Événements</a><a href="reservation.html">Réserver</a><a href="contact.html">Contact</a>
+</nav>
+<a class="btn" href="reservation.html">Réserver une table</a>
+<a class="btn" href="events-admin.html">Admin</a>
+</div>
 </header>
 
-
 <main>
-<section class="page-hero"><div class="container"><div class="kicker">The Hen House</div><h1>Événements</h1><p style="color:#aaa;margin-top:18px">Les soirées et rendez-vous du Hen House.</p></div></section>
+<section class="page-hero"><div class="container"><div class="kicker">The Hen House</div><h1>Événements</h1><p style="color:#aaa;margin-top:18px">Retrouvez toutes les soirées du Hen House dans notre calendrier.</p></div></section>
 <section><div class="container">
-<div class="grid">
- <article class="card"><div class="kicker">03 Octobre 2026 • 22:00</div><h3>Soirée Pyjama</h3><p>Soirée Pyjama, venez vous amuser autour d'un jeu nommé "Loup Garou", tout cela en pyjama.</p><div style="margin-top:20px"></div></article>
- <article class="card"><div class="kicker">25 Septembre 2026 • 22:00</div><h3>Speed Dating</h3><p>Une soirée dédiée aux rencontres, dans l'ambiance du Hen House.</p><div style="margin-top:20px"></div></article>
- <article class="card"><div class="kicker">24 Septembre 2026 • 22:00</div><h3>Man Night</h3><p>Dress code bleu, blanc ou vert. Première consommation verte offerte. Rock & Hard Rock.</p></article>
- <article class="card"><div class="kicker">18 Septembre 2026 • 22:00</div><h3>Stand Up Comedy</h3><p>Une soirée humour et scène ouverte au Hen House.</p></article>
+<div class="calendar-wrap">
+<div class="calendar-head">
+<button class="cal-btn" id="prevMonth" aria-label="Mois précédent">‹</button>
+<div class="calendar-title" id="monthTitle"></div>
+<button class="cal-btn" id="nextMonth" aria-label="Mois suivant">›</button>
 </div>
-<div class="notice" style="margin-top:30px">Les dates peuvent être modifiées selon la programmation du serveur.</div>
+<div class="weekdays"><div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div></div>
+<div class="days" id="calendarDays"></div>
+</div>
+<div class="legend">Cliquez sur une soirée pour afficher les détails.</div>
 </div></section>
 </main>
 
+<div class="modal" id="eventModal" onclick="closeOutside(event)">
+<div class="modal-box">
+<img id="modalImage" src="" alt="" hidden>
+<div class="kicker" id="modalDate"></div>
+<h3 id="modalTitle"></h3>
+<div class="modal-meta" id="modalTime"></div>
+<p id="modalDescription" style="color:#c9c1b5;margin-bottom:24px"></p>
+<button class="close-btn" onclick="closeModal()">Fermer</button>
+</div>
+</div>
 
-<footer>
-  <div class="container">
-    <div>
-      <strong style="color:#e8d39a;letter-spacing:2px">THE HEN HOUSE</strong>
-      <p>Bar • Night Club — Paleto Bay, San Andreas</p>
-    </div>
-    <p>© 2026 The Hen House. Tous droits réservés.</p>
-  </div>
-</footer>
+<footer><div class="container"><div><strong style="color:#e8d39a;letter-spacing:2px">THE HEN HOUSE</strong><p>Bar • Night Club — Paleto Bay, San Andreas</p></div><p>© 2026 The Hen House. Tous droits réservés.</p></div></footer>
 
+<script>
+const API_URL =
+  "https://thehenhouse-reservation.maxgamingdu4.workers.dev";
+
+let events = [];
+
+let currentDate = new Date(2026, 9, 1);
+
+const monthNames = [
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre"
+];
+
+function pad(n) {
+  return String(n).padStart(2, "0");
+}
+
+function iso(y, m, d) {
+  return `${y}-${pad(m + 1)}-${pad(d)}`;
+}
+
+
+/* =========================================================
+   RÉCUPÉRATION DES ÉVÉNEMENTS D1
+   ========================================================= */
+
+async function loadEvents() {
+
+  try {
+
+    const response = await fetch(`${API_URL}/events`);
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.error || "Impossible de récupérer les événements."
+      );
+    }
+
+    /*
+      Conversion des noms de champs D1
+      vers ceux utilisés par le calendrier.
+    */
+
+    events = (data.events || []).map(event => ({
+      id: event.id,
+      date: event.date,
+      title: event.title,
+      time: event.time || "",
+      description: event.description || "",
+      image: event.image_url || ""
+    }));
+
+    renderCalendar();
+
+  } catch (error) {
+
+    console.error(
+      "Erreur chargement événements :",
+      error
+    );
+
+    events = [];
+
+    renderCalendar();
+
+  }
+}
+
+
+/* =========================================================
+   CALENDRIER
+   ========================================================= */
+
+function renderCalendar() {
+
+  const y = currentDate.getFullYear();
+  const m = currentDate.getMonth();
+
+  document.getElementById("monthTitle").textContent =
+    `${monthNames[m]} ${y}`;
+
+  const first = new Date(y, m, 1);
+
+  const days =
+    new Date(y, m + 1, 0).getDate();
+
+  let start =
+    first.getDay() - 1;
+
+  if (start < 0) {
+    start = 6;
+  }
+
+  const prev =
+    new Date(y, m, 0).getDate();
+
+  const total =
+    Math.ceil((start + days) / 7) * 7;
+
+  const grid =
+    document.getElementById("calendarDays");
+
+  grid.innerHTML = "";
+
+
+  for (let i = 0; i < total; i++) {
+
+    let n;
+    let date;
+    let muted = false;
+
+
+    if (i < start) {
+
+      n = prev - start + i + 1;
+
+      date = new Date(
+        y,
+        m - 1,
+        n
+      );
+
+      muted = true;
+
+    } else if (i >= start + days) {
+
+      n = i - start - days + 1;
+
+      date = new Date(
+        y,
+        m + 1,
+        n
+      );
+
+      muted = true;
+
+    } else {
+
+      n = i - start + 1;
+
+      date = new Date(
+        y,
+        m,
+        n
+      );
+
+    }
+
+
+    const key =
+      iso(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      );
+
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      "day" + (muted ? " muted" : "");
+
+
+    const now = new Date();
+
+    if (
+      date.toDateString() ===
+      now.toDateString()
+    ) {
+      cell.classList.add("today");
+    }
+
+
+    cell.innerHTML =
+      `<div class="day-number">${n}</div>`;
+
+
+    /*
+      Recherche des événements
+      correspondant à cette date.
+    */
+
+    events
+      .filter(event => event.date === key)
+      .forEach(event => {
+
+        const button =
+          document.createElement("button");
+
+        button.className =
+          "event-chip";
+
+        button.type =
+          "button";
+
+
+        const image =
+          event.image
+            ? `<img
+                 src="${escapeHtml(event.image)}"
+                 alt=""
+               >`
+            : "";
+
+
+        button.innerHTML = `
+          ${image}
+
+          <div class="event-name">
+            ${escapeHtml(event.title)}
+          </div>
+
+          <div class="event-time">
+            ${escapeHtml(event.time || "")}
+          </div>
+        `;
+
+
+        button.onclick = () =>
+          openModal(event);
+
+
+        cell.appendChild(button);
+
+      });
+
+
+    grid.appendChild(cell);
+
+  }
+
+}
+
+
+/* =========================================================
+   FORMAT DATE
+   ========================================================= */
+
+function formatDate(value) {
+
+  const [
+    y,
+    m,
+    d
+  ] = value.split("-").map(Number);
+
+  return `
+    ${String(d).padStart(2, "0")}
+    ${monthNames[m - 1]}
+    ${y}
+  `;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+function openModal(event) {
+
+  document.getElementById("modalDate").textContent =
+    formatDate(event.date);
+
+
+  document.getElementById("modalTitle").textContent =
+    event.title;
+
+
+  document.getElementById("modalTime").textContent =
+    event.time
+      ? `Début à ${event.time}`
+      : "";
+
+
+  document.getElementById("modalDescription").textContent =
+    event.description || "";
+
+
+  const image =
+    document.getElementById("modalImage");
+
+
+  image.hidden =
+    !event.image;
+
+
+  if (event.image) {
+
+    image.src =
+      event.image;
+
+    image.alt =
+      event.title;
+
+  }
+
+
+  document
+    .getElementById("eventModal")
+    .classList.add("open");
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function closeModal() {
+
+  document
+    .getElementById("eventModal")
+    .classList.remove("open");
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+function closeOutside(event) {
+
+  if (
+    event.target ===
+    event.currentTarget
+  ) {
+    closeModal();
+  }
+
+}
+
+
+/* =========================================================
+   NAVIGATION CALENDRIER
+   ========================================================= */
+
+document
+  .getElementById("prevMonth")
+  .onclick = () => {
+
+    currentDate.setMonth(
+      currentDate.getMonth() - 1
+    );
+
+    renderCalendar();
+
+  };
+
+
+document
+  .getElementById("nextMonth")
+  .onclick = () => {
+
+    currentDate.setMonth(
+      currentDate.getMonth() + 1
+    );
+
+    renderCalendar();
+
+  };
+
+
+/* =========================================================
+   ESCAPE
+   ========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if (event.key === "Escape") {
+      closeModal();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   PETITE PROTECTION HTML
+   ========================================================= */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   CHARGEMENT INITIAL
+   ========================================================= */
+
+loadEvents();
+
+</script>
 </body>
 </html>
