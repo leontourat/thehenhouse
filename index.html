@@ -1,17 +1,18 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Accueil — The Hen House</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accueil — The Hen House</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body class="home-page">
 <script src="maintenance-check.js"></script>
-<body>
-
 <header>
   <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Hen House"></a>
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" data-site-logo alt="The Hen House">
+    </a>
     <nav>
       <a href="index.html">Accueil</a>
       <a href="menu.html">Carte</a>
@@ -19,59 +20,58 @@
       <a href="reservation.html">Réserver</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <a class="btn" href="reservation.html">Réserver une table</a>
+    <div class="header-actions">
+      <a class="btn" href="reservation.html">Réserver</a>
+      <a class="btn admin-header-btn" href="events-admin.html">Administration</a>
+    </div>
   </div>
 </header>
-
 
 <main>
 <section class="hero">
   <div class="hero-content">
     <div class="kicker">Paleto Bay • San Andreas</div>
     <h1>The <span>Hen House</span></h1>
-    <p>Bar & Night Club. Cocktails, musique, soirées et ambiance jusqu'au bout de la nuit.</p>
+    <p>Bar & Night Club — cocktails, soirées et ambiance unique au cœur de Paleto Bay.</p>
     <div class="actions">
-      <a class="btn" href="menu.html">Découvrir la carte</a>
-      <a class="btn outline" href="reservation.html">Réserver</a>
+      <a class="btn" href="reservation.html">Réserver une table</a>
+      <a class="btn outline" href="menu.html">Découvrir la carte</a>
     </div>
   </div>
 </section>
 
 <section>
- <div class="container">
-  <div class="section-head">
-   <div class="kicker">L'expérience</div>
-   <h2>Une adresse, deux ambiances</h2>
-   <p>Commencez la soirée autour d'un verre, puis laissez la nuit prendre le relais.</p>
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">L'expérience</div>
+      <h2>Bienvenue au Hen House</h2>
+      <p>Un lieu pensé pour profiter, se retrouver et faire la fête.</p>
+    </div>
+    <div class="grid">
+      <article class="card"><h3> Cocktails</h3><p>Une sélection de cocktails et mocktails maison.</p></article>
+      <article class="card"><h3> Soirées</h3><p>Karaoké, comedy, speed dating et soirées à thème.</p></article>
+      <article class="card"><h3> Tables</h3><p>Réservez votre table et profitez pleinement de votre soirée.</p></article>
+    </div>
   </div>
-  <div class="grid">
-   <article class="card"><h3>Le Bar</h3><p>Whisky, rhum, vodka, vins, tequila, champagne et créations maison.</p></article>
-   <article class="card"><h3>Le Night Club</h3><p>Soirées à thème, musique et événements spéciaux au cœur de Paleto Bay.</p></article>
-   <article class="card"><h3>La Carte</h3><p>Cocktails, mocktails, softs et grignotages pour accompagner votre soirée.</p></article>
-  </div>
- </div>
 </section>
 
-<div class="banner">
- <div class="container">
-  <div class="kicker">Paleto Bay</div>
-  <h2 style="font-size:38px;font-weight:normal">On se retrouve au Hen House.</h2>
-  <p style="color:#bdb5a8;margin:10px 0 25px">Réservez votre table et préparez votre soirée.</p>
-  <a class="btn" href="reservation.html">Réserver une table</a>
- </div>
-</div>
+<section class="banner">
+  <div class="container">
+    <div class="kicker">The Hen House</div>
+    <h2>Votre soirée commence ici.</h2>
+    <br>
+    <a class="btn" href="events.html">Voir les événements</a>
+  </div>
+</section>
 </main>
-
 
 <footer>
   <div class="container">
-    <div>
-      <strong style="color:#e8d39a;letter-spacing:2px">THE HEN HOUSE</strong>
-      <p>Bar • Night Club — Paleto Bay, San Andreas</p>
-    </div>
-    <p>© 2026 The Hen House. Tous droits réservés.</p>
+    <p>THE HEN HOUSE • PALETO BAY • SAN ANDREAS</p>
+    <p>© 2026 The Hen House</p>
   </div>
 </footer>
-
+<script src="background-loader.js"></script>
+<script src="logo-loader.js"></script>
 </body>
 </html>
