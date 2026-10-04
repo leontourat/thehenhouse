@@ -1,17 +1,18 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Carte — The Hen House</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carte — The Hen House</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body class="">
 <script src="maintenance-check.js"></script>
-<body>
-
 <header>
   <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Hen House"></a>
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" data-site-logo alt="The Hen House">
+    </a>
     <nav>
       <a href="index.html">Accueil</a>
       <a href="menu.html">Carte</a>
@@ -19,32 +20,39 @@
       <a href="reservation.html">Réserver</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <a class="btn" href="reservation.html">Réserver une table</a>
+    <div class="header-actions">
+      <a class="btn" href="reservation.html">Réserver</a>
+      <a class="btn admin-header-btn" href="events-admin.html">Administration</a>
+    </div>
   </div>
 </header>
 
-
 <main>
-<section class="page-hero"><div class="container"><div class="kicker">The Hen House</div><h1>Notre <span style="color:#c9a24b">carte</span></h1><p style="color:#aaa;margin-top:18px">Chaque catégorie dispose de sa propre page.</p></div></section>
-<section><div class="container"><div class="grid">
- <a class="card" href="menu/alcool.html"><h3>Alcool</h3><p>Whisky, rhum, vodka, vins, tequila & champagne.</p></a>
- <a class="card" href="menu/cocktails.html"><h3>Cocktails</h3><p>Les créations signatures de la maison.</p></a>
- <a class="card" href="menu/mocktails.html"><h3>Mocktails</h3><p>Des créations sans alcool.</p></a>
- <a class="card" href="menu/soft.html"><h3>Soft</h3><p>Energy drinks, jus, sodas & eau.</p></a>
- <a class="card" href="menu/grignotage.html"><h3>Grignotage</h3><p>À partager autour d'un verre.</p></a>
-</div></div></section>
+<section class="page-hero">
+  <div class="container">
+    <div class="kicker">The Hen House</div>
+    <h1>La <span>Carte</span></h1>
+    <p>Découvrez nos différentes catégories.</p>
+  </div>
+</section>
+<section>
+  <div class="container category-grid">
+    <a class="category-card" href="menu/alcool.html"><div><div class="icon"></div><h3>Alcool</h3><p>Spiritueux, vins, bière et champagne.</p></div><span class="btn">Voir la carte</span></a>
+    <a class="category-card" href="menu/cocktails.html"><div><div class="icon"></div><h3>Cocktails</h3><p>Nos cocktails signatures.</p></div><span class="btn">Voir la carte</span></a>
+    <a class="category-card" href="menu/mocktails.html"><div><div class="icon"></div><h3>Mocktails</h3><p>Des créations sans alcool.</p></div><span class="btn">Voir la carte</span></a>
+    <a class="category-card" href="menu/soft.html"><div><div class="icon"></div><h3>Soft</h3><p>Boissons fraîches et énergisantes.</p></div><span class="btn">Voir la carte</span></a>
+    <a class="category-card" href="menu/grignotage.html"><div><div class="icon"></div><h3>Grignotage</h3><p>Planches et petites faims.</p></div><span class="btn">Voir la carte</span></a>
+  </div>
+</section>
 </main>
-
 
 <footer>
   <div class="container">
-    <div>
-      <strong style="color:#e8d39a;letter-spacing:2px">THE HEN HOUSE</strong>
-      <p>Bar • Night Club — Paleto Bay, San Andreas</p>
-    </div>
-    <p>© 2026 The Hen House. Tous droits réservés.</p>
+    <p>THE HEN HOUSE • PALETO BAY • SAN ANDREAS</p>
+    <p>© 2026 The Hen House</p>
   </div>
 </footer>
-
+<script src="background-loader.js"></script>
+<script src="logo-loader.js"></script>
 </body>
 </html>
