@@ -1,16 +1,18 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Réserver — The Hen House</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Réservation — The Hen House</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body class="">
 <script src="maintenance-check.js"></script>
-<body>
 <header>
   <div class="container nav">
-    <a class="brand" href="index.html"><img src="assets/logo.png" alt="The Hen House"></a>
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" data-site-logo alt="The Hen House">
+    </a>
     <nav>
       <a href="index.html">Accueil</a>
       <a href="menu.html">Carte</a>
@@ -18,113 +20,55 @@
       <a href="reservation.html">Réserver</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <a class="btn" href="reservation.html">Réserver une table</a>
+    <div class="header-actions">
+      <a class="btn" href="reservation.html">Réserver</a>
+      <a class="btn admin-header-btn" href="events-admin.html">Administration</a>
+    </div>
   </div>
 </header>
 
 <main>
-<section class="page-hero">
-  <div class="container">
-    <div class="kicker">The Hen House</div>
-    <h1>Réserver</h1>
-    <p style="color:#aaa;margin-top:18px">Demandez votre table pour votre prochaine soirée.</p>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <form id="reservationForm">
-      <label>Nom / Prénom
-        <input required name="name" maxlength="80" autocomplete="name" placeholder="Votre nom">
-      </label>
-
-      <label>Nombre de personnes
-        <input required type="number" min="1" max="30" name="people" placeholder="Ex. 4">
-      </label>
-
-      <label>Date
-        <input required type="date" name="date">
-      </label>
-
-      <label>Heure
-        <input required type="time" name="time">
-      </label>
-
-      <label>Message
-        <textarea name="message" maxlength="1000" placeholder="Précisions, événement, demande particulière..."></textarea>
-      </label>
-
-      <button class="btn" type="submit" id="submitBtn">Envoyer la demande</button>
-
-      <div id="status" class="notice" hidden></div>
-    </form>
-  </div>
-</section>
+<section class="page-hero"><div class="container">
+<div class="kicker">The Hen House</div><h1>Réserver une <span>table</span></h1>
+<p>Envoyez votre demande de réservation.</p>
+</div></section>
+<section><div class="container">
+<div id="reservationMessage" class="message"></div>
+<form id="reservationForm">
+<label for="name">Nom / Prénom</label><input id="name" name="name" required>
+<label for="people">Nombre de personnes</label><input id="people" name="people" type="number" min="1" required>
+<label for="date">Date</label><input id="date" name="date" type="date" required>
+<label for="time">Heure</label><input id="time" name="time" type="time" required>
+<label for="message">Message</label><textarea id="message" name="message" placeholder="Précisions éventuelles"></textarea>
+<button class="btn" type="submit">Envoyer la réservation</button>
+</form>
+</div></section>
 </main>
+<script>
+const API_URL="https://thehenhouse-reservation.maxgamingdu4.workers.dev";
+document.getElementById("reservationForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const form=e.currentTarget,msg=document.getElementById("reservationMessage");
+ msg.className="message show info";msg.textContent="Envoi de votre réservation...";
+ try{
+  const r=await fetch(API_URL+"/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+   name:form.name.value.trim(),people:form.people.value,date:form.date.value,time:form.time.value,message:form.message.value.trim()
+  })});
+  const d=await r.json();
+  if(!r.ok||!d.success)throw new Error(d.error||"Erreur");
+  msg.className="message show success";msg.textContent=" Votre demande de réservation a bien été envoyée.";
+  form.reset();
+ }catch(err){msg.className="message show error";msg.textContent=" "+err.message}
+});
+</script>
 
 <footer>
   <div class="container">
-    <div>
-      <strong style="color:#e8d39a;letter-spacing:2px">THE HEN HOUSE</strong>
-      <p>Bar • Night Club — Paleto Bay, San Andreas</p>
-    </div>
-    <p>© 2026 The Hen House. Tous droits réservés.</p>
+    <p>THE HEN HOUSE • PALETO BAY • SAN ANDREAS</p>
+    <p>© 2026 The Hen House</p>
   </div>
 </footer>
-
-<script>
-/*
- * URL publique de ton Cloudflare Worker.
- * Exemple :
- * const DISCORD_ENDPOINT = "https://hen-house-reservations.ton-compte.workers.dev";
- *
- * NE METS JAMAIS le webhook Discord directement ici.
- */
-const DISCORD_ENDPOINT = "https://thehenhouse-reservation.maxgamingdu4.workers.dev";
-
-const form = document.getElementById("reservationForm");
-const statusBox = document.getElementById("status");
-const submitBtn = document.getElementById("submitBtn");
-
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  if (DISCORD_ENDPOINT.includes("TON-WORKER")) {
-    statusBox.hidden = false;
-    statusBox.textContent = "Le formulaire doit d'abord être relié au serveur sécurisé Discord.";
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Envoi en cours...";
-  statusBox.hidden = true;
-
-  const data = Object.fromEntries(new FormData(form).entries());
-
-  try {
-    const response = await fetch(DISCORD_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-
-    const result = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      throw new Error(result.error || "Erreur lors de l'envoi.");
-    }
-
-    form.reset();
-    statusBox.hidden = false;
-    statusBox.textContent = "Votre demande de réservation a bien été envoyée. Nous reviendrons vers vous prochainement.";
-  } catch (error) {
-    statusBox.hidden = false;
-    statusBox.textContent = "Impossible d'envoyer la demande pour le moment. Réessayez dans quelques instants.";
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Envoyer la demande";
-  }
-});
-</script>
+<script src="background-loader.js"></script>
+<script src="logo-loader.js"></script>
 </body>
 </html>
