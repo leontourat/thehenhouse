@@ -1,37 +1,18 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cocktails — The Hen House</title>
-<link rel="stylesheet" href="../style.css">
-
-<style>
-.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.product-card{position:relative;background:linear-gradient(145deg,#18150f,#0d0c09);border:1px solid rgba(201,162,75,.28);padding:28px;min-height:220px;display:flex;flex-direction:column}
-.product-card h3{font-size:24px;color:#f0d58a;margin-bottom:8px}
-.product-card .price{margin-top:auto;margin-bottom:18px}
-.detail-btn{cursor:pointer;border:1px solid #c9a24b;background:transparent;color:#f0d58a;padding:11px 16px;font:bold 11px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
-.detail-btn:hover{background:#c9a24b;color:#111}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}
-.modal.open{display:flex}
-.modal-box{width:min(480px,100%);background:linear-gradient(145deg,#1b1710,#0b0a08);border:1px solid #c9a24b;box-shadow:0 20px 70px rgba(0,0,0,.7);padding:34px}
-.modal-box h3{font-size:31px;color:#f0d58a;margin-bottom:4px}
-.modal-price{font:bold 16px Arial,sans-serif;color:#c9a24b;margin-bottom:22px}
-.ingredients{list-style:none;display:grid;gap:9px;margin:0 0 25px}
-.ingredients li{border-bottom:1px solid rgba(255,255,255,.09);padding:8px 0;color:#d9d2c7}
-.ingredients li::before{content:"•";color:#c9a24b;margin-right:10px}
-.close-btn{cursor:pointer;border:1px solid #777;background:transparent;color:#eee;padding:10px 18px;font:bold 11px Arial,sans-serif;text-transform:uppercase;letter-spacing:1px}
-@media(max-width:850px){.product-grid{grid-template-columns:1fr}}
-</style>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cocktails — The Hen House</title>
+  <link rel="stylesheet" href="../style.css">
 </head>
+<body class="">
 <script src="../maintenance-check.js"></script>
-<body>
-
 <header>
   <div class="container nav">
-    <a class="brand" href="../index.html"><img src="../assets/logo.png" alt="The Hen House"></a>
+    <a class="brand" href="../index.html">
+      <img src="../assets/logo.png" data-site-logo alt="The Hen House">
+    </a>
     <nav>
       <a href="../index.html">Accueil</a>
       <a href="../menu.html">Carte</a>
@@ -39,115 +20,33 @@
       <a href="../reservation.html">Réserver</a>
       <a href="../contact.html">Contact</a>
     </nav>
-    <a class="btn" href="../reservation.html">Réserver une table</a>
+    <div class="header-actions">
+      <a class="btn" href="../reservation.html">Réserver</a>
+      <a class="btn admin-header-btn" href="../events-admin.html">🔐 Administration</a>
+    </div>
   </div>
 </header>
 
 <main>
-<section class="page-hero">
-  <div class="container">
-    <div class="kicker">The Hen House</div>
-    <h1>Cocktails</h1>
-    <p style="color:#aaa;margin-top:18px">Découvrez les créations cocktails du Hen House.</p>
-  </div>
-</section>
-<section>
-  <div class="container">
-    <div class="product-grid">
-      
-        <article class="product-card">
-          <div class="kicker">The Hen House</div>
-          <h3>Hen House Cocktail</h3>
-          <p style="color:#aaa">Création maison</p>
-          <div class="price">$55</div>
-          <button class="detail-btn" type="button" onclick="openModal('modal-0')">Voir les détails</button>
-        </article>
-        
-        <article class="product-card">
-          <div class="kicker">The Hen House</div>
-          <h3>Golden Cocktail</h3>
-          <p style="color:#aaa">Création maison</p>
-          <div class="price">$55</div>
-          <button class="detail-btn" type="button" onclick="openModal('modal-1')">Voir les détails</button>
-        </article>
-        
-        <article class="product-card">
-          <div class="kicker">The Hen House</div>
-          <h3>The Saints</h3>
-          <p style="color:#aaa">Création maison</p>
-          <div class="price">$55</div>
-          <button class="detail-btn" type="button" onclick="openModal('modal-2')">Voir les détails</button>
-        </article>
-        
-    </div>
-    <div style="margin-top:40px;text-align:center">
-      <a class="btn outline" href="../menu.html">← Retour à la carte</a>
-    </div>
-  </div>
-</section>
-</main>
-
-        <div class="modal" id="modal-0" role="dialog" aria-modal="true" aria-labelledby="title-0" onclick="closeOutside(event, 'modal-0')">
-          <div class="modal-box">
-            <h3 id="title-0">Hen House Cocktail</h3>
-            <div class="modal-price">$55</div>
-            <div class="kicker" style="margin-bottom:10px">Ingrédients</div>
-            <ul class="ingredients"><li>Rhum</li><li>Ananas</li><li>Gingembre</li><li>Citron Vert</li></ul>
-            <button class="close-btn" type="button" onclick="closeModal('modal-0')">Fermer</button>
-          </div>
-        </div>
-        
-        <div class="modal" id="modal-1" role="dialog" aria-modal="true" aria-labelledby="title-1" onclick="closeOutside(event, 'modal-1')">
-          <div class="modal-box">
-            <h3 id="title-1">Golden Cocktail</h3>
-            <div class="modal-price">$55</div>
-            <div class="kicker" style="margin-bottom:10px">Ingrédients</div>
-            <ul class="ingredients"><li>Whisky</li><li>Pomme</li><li>Fraise</li><li>Gingembre</li></ul>
-            <button class="close-btn" type="button" onclick="closeModal('modal-1')">Fermer</button>
-          </div>
-        </div>
-        
-        <div class="modal" id="modal-2" role="dialog" aria-modal="true" aria-labelledby="title-2" onclick="closeOutside(event, 'modal-2')">
-          <div class="modal-box">
-            <h3 id="title-2">The Saints</h3>
-            <div class="modal-price">$55</div>
-            <div class="kicker" style="margin-bottom:10px">Ingrédients</div>
-            <ul class="ingredients"><li>Tequila</li><li>Energy Drink</li><li>Framboise</li><li>Myrtille</li><li>Gingembre</li></ul>
-            <button class="close-btn" type="button" onclick="closeModal('modal-2')">Fermer</button>
-          </div>
-        </div>
-        
-
+<section class="page-hero"><div class="container"><div class="kicker">The Hen House</div><h1>Cocktails</h1><p>Nos créations signatures.</p></div></section>
+<section><div class="container grid">
+<article class="card">
+<h3>Hen House Cocktail</h3><p>Rhum • Ananas • Gingembre • Citron Vert</p><div class="price">55 $</div>
+</article>
+<article class="card">
+<h3>Golden Cocktail</h3><p>Whisky • Pomme • Fraise • Gingembre</p><div class="price">55 $</div>
+</article>
+<article class="card">
+<h3>The Saints</h3><p>Tequila • Energy Drink • Framboise • Myrtille • Gingembre</p><div class="price">55 $</div>
+</article>
+</div></section></main>
 <footer>
   <div class="container">
-    <div>
-      <strong style="color:#e8d39a;letter-spacing:2px">THE HEN HOUSE</strong>
-      <p>Bar • Night Club — Paleto Bay, San Andreas</p>
-    </div>
-    <p>© 2026 The Hen House. Tous droits réservés.</p>
+    <p>THE HEN HOUSE • PALETO BAY • SAN ANDREAS</p>
+    <p>© 2026 The Hen House</p>
   </div>
 </footer>
-
-<script>
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closeOutside(event, id) {
-  if (event.target === event.currentTarget) closeModal(id);
-}
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    document.querySelectorAll('.modal.open').forEach(function(m) {
-      m.classList.remove('open');
-    });
-    document.body.style.overflow = '';
-  }
-});
-</script>
+<script src="../background-loader.js?v=2"></script>
+<script src="../logo-loader.js?v=2"></script>
 </body>
 </html>
