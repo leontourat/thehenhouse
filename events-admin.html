@@ -2097,7 +2097,25 @@ function renderStocks(){
       const row=input.closest(".stock-row"), id=Number(row.dataset.stockId);
       const item=stockItems.find(x=>Number(x.id)===id); if(!item)return;
       item.current_stock=Math.max(0,Number(input.value)||0);
-      renderStocks();
+      const target=Number(item.target_stock)||0;
+      const restock=Math.max(target-item.current_stock,0);
+      const st=stateFor(item.current_stock,target);
+      const restockLabel=row.querySelector(".stock-restock strong");
+      const statusLabel=row.querySelector(".stock-status");
+      if(restockLabel)restockLabel.textContent=restock;
+      if(statusLabel){statusLabel.className="stock-status "+st.cls;statusLabel.textContent=st.label;}
+      let full=0,low=0,totalRestock=0;
+      stockItems.forEach(product=>{
+        const current=Number(product.current_stock)||0;
+        const target=Number(product.target_stock)||0;
+        const state=stateFor(current,target);
+        if(state.cls==="full")full++;
+        else if(state.cls==="low"||state.cls==="empty")low++;
+        totalRestock+=Math.max(target-current,0);
+      });
+      $("stockFullProducts").textContent=full;
+      $("stockLowProducts").textContent=low;
+      $("stockTotalRestock").textContent=totalRestock;
     });
   });
   list.querySelectorAll(".stock-save-one").forEach(btn=>btn.addEventListener("click",async()=>{
