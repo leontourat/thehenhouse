@@ -13028,3 +13028,26 @@ body:has(#adminSection){
 .reservation-page .reservation-track-detail span{display:block;color:#a9a197;font:700 10px Arial,sans-serif;letter-spacing:1.1px;margin-bottom:12px}
 .reservation-page .reservation-track-detail strong{display:block;color:#f3eee4;font:600 19px Arial,sans-serif;overflow-wrap:anywhere}
 @media(max-width:680px){.reservation-page .reservation-track-card{margin:20px auto 45px;padding:22px 18px}.reservation-page .reservation-track-form{grid-template-columns:1fr}.reservation-page .reservation-track-result{padding:18px}.reservation-page .reservation-track-result-head{flex-wrap:wrap;gap:12px}.reservation-page .reservation-track-result-head>div:nth-child(2){flex:1 1 calc(100% - 65px)}.reservation-page .reservation-track-status{margin-left:0}.reservation-page .reservation-track-details{grid-template-columns:1fr;gap:9px}.reservation-page .reservation-track-detail{padding:15px}}
+
+/* THE HEN HOUSE — ESPACE RUNNER */
+.runner-page{background:radial-gradient(circle at 50% 0,rgba(201,162,75,.11),transparent 45%),#080807}.runner-shell{width:min(720px,calc(100% - 32px));margin:70px auto}.runner-kicker{font:11px Arial,sans-serif;letter-spacing:3px;color:#c9a24b}.runner-shell h1{font-size:clamp(32px,6vw,55px);line-height:1.2;margin:12px 0}.runner-shell h1 span{color:#c9a24b}.runner-lead{color:#b8b1a5;margin-bottom:28px}.runner-card{padding:30px;background:linear-gradient(135deg,#18150f,#0b0a08);border:1px solid rgba(201,162,75,.38);margin-bottom:18px}.runner-card[hidden]{display:none!important}.runner-card h2{font-size:23px;color:#f0d58a;margin-bottom:20px}.runner-card form{max-width:none}.runner-card label{display:block;margin-bottom:8px}.runner-card input:not([type=checkbox]){width:100%;margin-bottom:15px}.runner-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.runner-primary{background:#c9a24b;color:#080807;border:1px solid #c9a24b;padding:14px 18px;font:700 13px Arial,sans-serif;letter-spacing:1px}.runner-primary:disabled{opacity:.6}.runner-outline{border:1px solid #c9a24b;color:#f0d58a;background:transparent;padding:9px 12px}.runner-card-head{display:flex;align-items:center;justify-content:space-between;gap:15px}.runner-check{display:flex!important;align-items:center;gap:12px;padding:15px;border:1px solid rgba(201,162,75,.35);cursor:pointer}.runner-check input{width:20px;height:20px}.runner-check span{color:#eee;font:14px Arial,sans-serif}.runner-feedback{color:#f0d58a;margin-top:15px;font:13px Arial,sans-serif}.runner-back{text-align:center;color:#c9a24b;margin-top:22px}.runner-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0}.runner-metrics>div{padding:18px;background:#0b0a08;border:1px solid rgba(201,162,75,.24)}.runner-metrics span{display:block;color:#b8b1a5;font:12px Arial,sans-serif}.runner-metrics strong{font:700 30px Arial,sans-serif;color:#f0d58a}.runner-toolbar{display:flex;gap:12px;margin:18px 0}.runner-toolbar input{flex:1}.runner-employee-list,.runner-history{display:grid;gap:9px}.runner-employee,.runner-history-row{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#0b0a08;border:1px solid rgba(201,162,75,.18);padding:15px}.runner-employee strong,.runner-history-row strong{display:block;color:#f0d58a}.runner-employee small,.runner-history-row small{display:block;color:#aaa;margin-top:4px}.runner-employee b{color:#c9a24b}.runner-subtitle{margin:30px 0 15px;color:#f0d58a}.runner-empty{padding:15px;color:#999}@media(max-width:600px){.runner-form-grid{grid-template-columns:1fr}.runner-card{padding:20px}.runner-toolbar{flex-direction:column}.runner-history-row{align-items:flex-start;flex-direction:column}}
+
+/* THE HEN HOUSE — clôture hebdomadaire Runner */
+.runner-close-btn{background:#c9a24b!important;color:#080807!important;font-weight:700!important}
+.runner-close-btn:disabled{opacity:.5;cursor:wait}
+.runner-weeks-history{display:grid;gap:12px;margin:16px 0 28px}
+.runner-week-card{border:1px solid rgba(201,162,75,.3);background:#100f0c;color:#f3eee4}
+.runner-week-card summary{display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;padding:17px 20px;list-style:none}
+.runner-week-card summary::-webkit-details-marker{display:none}
+.runner-week-card summary strong,.runner-week-card summary small{display:block}
+.runner-week-card summary strong{color:#f0d58a}
+.runner-week-card summary small{font:12px Arial,sans-serif;color:#a9a197;margin-top:6px}
+.runner-week-card summary b{color:#f0d58a;white-space:nowrap}
+.runner-week-detail{padding:0 18px 18px;border-top:1px solid rgba(201,162,75,.15)}
+.runner-week-detail .runner-employee{margin-top:10px}
+@media(max-width:600px){.runner-week-card summary{padding:14px;align-items:flex-start}.runner-week-detail{padding:0 10px 12px}}
+
+/* Actions de suppression des périodes Runner clôturées */
+.runner-week-actions{display:flex;justify-content:flex-end;padding:12px 18px 18px;border-top:1px solid rgba(201,162,75,.15)}
+.runner-week-delete{cursor:pointer;padding:10px 14px;border-radius:7px}
+.runner-week-delete:disabled{opacity:.55;cursor:wait}

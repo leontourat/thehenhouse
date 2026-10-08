@@ -625,6 +625,7 @@
   <button type="button" class="admin-tab" data-target="logo">LOGO</button>
   <button type="button" class="admin-tab" data-target="reservations">RÉSERVATIONS</button>
   <button type="button" class="admin-tab" data-target="stocks">STOCKS</button>
+  <button type="button" class="admin-tab" data-target="runner">RUNNER</button>
 </nav>
       <!-- =================================================
            MAINTENANCE
@@ -797,7 +798,14 @@
       <!-- =================================================
            STOCKS
       ================================================== -->
-      <div class="admin-card stock-admin-card" data-admin-panel="stocks">
+      <div class="admin-card runner-admin-card" data-admin-panel="runner">
+<h2>🚚 Gestion des Runners</h2><p class="admin-description">Déclarations de runs, employés et historique.</p>
+<div class="runner-metrics"><div><span>Employés</span><strong id="runnerEmployeeCount">0</strong></div><div><span>Runs déclarés</span><strong id="runnerRunCount">0</strong></div></div>
+<div class="runner-toolbar"><button type="button" class="admin-btn runner-close-btn" id="runnerCloseWeek">🔒 Fermer la semaine</button><input id="runnerSearch" type="search" placeholder="Rechercher un employé ou téléphone"><button type="button" class="admin-btn" id="runnerRefresh">Actualiser</button></div>
+<div id="runnerAdminMessage" class="message"></div><div id="runnerEmployeeList" class="runner-employee-list"></div>
+<h3 class="runner-subtitle">Semaines clôturées</h3><div id="runnerWeeksHistory" class="runner-weeks-history"></div><h3 class="runner-subtitle">Déclarations de la semaine en cours</h3><div id="runnerHistory" class="runner-history"></div>
+</div>
+<div class="admin-card stock-admin-card" data-admin-panel="stocks">
         <div class="stock-title-row">
           <div>
             <h2>📦 Gestion du coffre</h2>
@@ -1910,6 +1918,7 @@
     });
     if(name==="events" && typeof loadEvents==="function") loadEvents();
     if(name==="reservations" && typeof window.loadReservationsAdmin==="function") window.loadReservationsAdmin();
+    if(name==="runner" && typeof window.loadRunnerAdmin==="function") window.loadRunnerAdmin();
     if(name==="stocks" && typeof window.loadStocksAdmin==="function") window.loadStocksAdmin();
     if(name==="logo" && typeof loadSiteLogo==="function") loadSiteLogo();
     if(name==="backgrounds" && typeof window.loadBackgroundAdmin==="function") window.loadBackgroundAdmin();
@@ -2262,6 +2271,44 @@ $("stockFinishControlButton")?.addEventListener("click",async()=>{
   finally{btn.disabled=false;btn.textContent="Terminer le contrôle & envoyer le rapport Discord"}
 });
 window.loadStocksAdmin=loadStocks;
+})();
+</script>
+<script>
+(function(){
+const api="https://thehenhouse-reservation.maxgamingdu4.workers.dev";
+let runs=[],weeks=[];
+const el=id=>document.getElementById(id);
+const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+function auth(){const code=(typeof adminCode!=="undefined"&&adminCode)||sessionStorage.getItem("henhouse_admin_code")||sessionStorage.getItem("adminCode")||"";return {Authorization:"Bearer "+code};}
+function notice(t,bad){const e=el("runnerAdminMessage");e.textContent=t;e.className="message show "+(bad?"error":"success");}
+async function call(path,options={}){const res=await fetch(api+path,{...options,headers:{...auth(),...(options.headers||{})}});const data=await res.json();if(!res.ok||!data.success)throw Error(data.error||"Erreur serveur");return data;}
+function render(){
+ const q=el("runnerSearch").value.toLocaleLowerCase("fr");
+ const current=runs.filter(r=>r.week_id==null);
+ const groups=new Map();for(const r of current){const key=[r.last_name,r.first_name,r.phone].map(v=>String(v).trim().toLocaleLowerCase("fr")).join("|");if(!groups.has(key))groups.set(key,{...r,count:0});groups.get(key).count++;}
+ el("runnerEmployeeCount").textContent=groups.size;el("runnerRunCount").textContent=current.length;
+ el("runnerEmployeeList").innerHTML=[...groups.values()].filter(r=>(r.last_name+" "+r.first_name+" "+r.phone).toLocaleLowerCase("fr").includes(q)).map(r=>`<div class="runner-employee"><div><strong>${safe(r.first_name)} ${safe(r.last_name)}</strong><small>${safe(r.phone)}</small></div><b>${r.count} run${r.count>1?"s":""}</b></div>`).join("")||'<p class="runner-empty">Aucun run pour la semaine en cours.</p>';
+ el("runnerHistory").innerHTML=current.filter(r=>(r.last_name+" "+r.first_name+" "+r.phone).toLocaleLowerCase("fr").includes(q)).map(r=>`<div class="runner-history-row"><div><strong>${safe(r.first_name)} ${safe(r.last_name)}</strong><small>${safe(r.phone)} · ${safe(r.created_at)}</small></div><button type="button" class="danger" data-runner-delete="${r.id}">Supprimer</button></div>`).join("")||'<p class="runner-empty">Aucune déclaration en cours.</p>';
+ el("runnerWeeksHistory").innerHTML=weeks.map(w=>`<details class="runner-week-card"><summary><span><strong>Clôture n° ${w.id}</strong><small>${safe(w.closed_at)} · ${w.runner_count} employé(s)</small></span><b>${w.total_runs} run(s)</b></summary><div class="runner-week-detail">${(w.summary||[]).map(r=>`<div class="runner-employee"><div><strong>${safe(r.first_name)} ${safe(r.last_name)}</strong><small>${safe(r.phone)}</small></div><b>${Number(r.runs)} run(s)</b></div>`).join("")}</div><div class="runner-week-actions"><button type="button" class="danger runner-week-delete" data-runner-week-delete="${w.id}">Supprimer la période</button></div></details>`).join("")||'<p class="runner-empty">Aucune semaine clôturée.</p>';
+}
+window.loadRunnerAdmin=async function(){try{const [r,w]=await Promise.all([call("/runner/runs"),call("/runner/weeks")]);runs=r.runs||[];weeks=w.weeks||[];render();}catch(e){notice(e.message,true);}};
+el("runnerRefresh").addEventListener("click",window.loadRunnerAdmin);
+el("runnerSearch").addEventListener("input",render);
+el("runnerCloseWeek").addEventListener("click",async()=>{
+ const current=runs.filter(r=>r.week_id==null);
+ if(!current.length){notice("Aucun run à clôturer.",true);return;}
+ if(!confirm(`Fermer la semaine et archiver ${current.length} run(s) ? Les compteurs hebdomadaires repartiront à zéro.`))return;
+ const btn=el("runnerCloseWeek");btn.disabled=true;
+ try{const data=await call("/runner/weeks/close",{method:"POST"});await window.loadRunnerAdmin();notice(`Semaine clôturée : ${data.week.total_runs} run(s) enregistrés. ${data.week.discord_sent?"Rapport envoyé sur Discord.":"Rapport Discord non envoyé (vérifiez le webhook)."}`);}catch(e){notice(e.message,true);}finally{btn.disabled=false;}
+});
+el("runnerWeeksHistory").addEventListener("click",async e=>{
+ const btn=e.target.closest("[data-runner-week-delete]");if(!btn)return;
+ const id=Number(btn.dataset.runnerWeekDelete);const week=weeks.find(w=>Number(w.id)===id);if(!week)return;
+ if(!confirm(`Supprimer définitivement la clôture n° ${id} et ses ${week.total_runs} run(s) ? Cette action est irréversible et ne remettra pas ces runs dans la semaine en cours.`))return;
+ btn.disabled=true;
+ try{await call("/runner/weeks/"+id,{method:"DELETE"});await window.loadRunnerAdmin();notice(`Période n° ${id} et ses déclarations supprimées.`);}catch(err){notice(err.message,true);btn.disabled=false;}
+});
+el("runnerHistory").addEventListener("click",async e=>{const btn=e.target.closest("[data-runner-delete]");if(!btn||!confirm("Supprimer cette déclaration de run ?"))return;try{await call("/runner/runs/"+btn.dataset.runnerDelete,{method:"DELETE"});await window.loadRunnerAdmin();notice("Déclaration supprimée.");}catch(err){notice(err.message,true);}});
 })();
 </script>
 </body>
