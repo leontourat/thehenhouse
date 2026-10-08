@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Réserver et suivre une réservation au The Hen House, Paleto Bay.">
   <title>Réservation — The Hen House</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="">
-<script src="maintenance-check.js"></script>
+<body class="reservation-page">
 <header>
   <div class="container nav">
     <a class="brand" href="index.html">
@@ -16,7 +16,7 @@
     <nav>
       <a href="index.html">Accueil</a>
       <a href="menu.html">Carte</a>
-      <a href="events.html">Événements</a>
+      <a href="events.html" class="active">Événements</a>
       <a href="reservation.html">Réserver</a>
       <a href="contact.html">Contact</a>
     </nav>
@@ -27,48 +27,147 @@
   </div>
 </header>
 
-<main>
-<section class="page-hero"><div class="container">
-<div class="kicker">The Hen House</div><h1>Réserver une <span>table</span></h1>
-<p>Envoyez votre demande de réservation.</p>
-</div></section>
-<section><div class="container">
-<div id="reservationMessage" class="message"></div>
-<form id="reservationForm">
-<label for="name">Nom / Prénom</label><input id="name" name="name" required>
-<label for="people">Nombre de personnes</label><input id="people" name="people" type="number" min="1" required>
-<label for="date">Date</label><input id="date" name="date" type="date" required>
-<label for="time">Heure</label><input id="time" name="time" type="time" required>
-<label for="message">Message</label><textarea id="message" name="message" placeholder="Précisions éventuelles"></textarea>
-<button class="btn" type="submit">Envoyer la réservation</button>
-</form>
-</div></section>
-</main>
-<script>
-const API_URL="https://thehenhouse-reservation.maxgamingdu4.workers.dev";
-document.getElementById("reservationForm").addEventListener("submit",async e=>{
- e.preventDefault();
- const form=e.currentTarget,msg=document.getElementById("reservationMessage");
- msg.className="message show info";msg.textContent="Envoi de votre réservation...";
- try{
-  const r=await fetch(API_URL+"/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-   name:form.name.value.trim(),people:form.people.value,date:form.date.value,time:form.time.value,message:form.message.value.trim()
-  })});
-  const d=await r.json();
-  if(!r.ok||!d.success)throw new Error(d.error||"Erreur");
-  msg.className="message show success";msg.textContent=" Votre demande de réservation a bien été envoyée.";
-  form.reset();
- }catch(err){msg.className="message show error";msg.textContent=" "+err.message}
-});
-</script>
+<main class="reservation-main">
+  <div class="reservation-shell">
+    <section class="reservation-intro">
+      <div class="kicker">THE HEN HOUSE · PALETO BAY</div>
+      <h1>Votre <span>réservation</span></h1>
+      <p>Envoyez votre demande de réservation. Notre équipe la consultera rapidement.</p>
+    </section>
 
-<footer>
-  <div class="container">
-    <p>THE HEN HOUSE • PALETO BAY • SAN ANDREAS</p>
-    <p>© 2026 The Hen House</p>
+    <section class="reservation-card">
+      <form id="reservationForm" class="reservation-form">
+        <div class="reservation-form-grid">
+          <div class="reservation-field"><label for="name">Nom &amp; prénom</label><input id="name" type="text" maxlength="100" placeholder="Votre nom et prénom" autocomplete="name" required></div>
+          <div class="reservation-field"><label for="phone">Téléphone</label><input id="phone" type="text" maxlength="50" placeholder="Votre numéro de téléphone" autocomplete="tel" required></div>
+          <div class="reservation-field"><label for="lifeinvader">LifeInvader</label><input id="lifeinvader" type="text" maxlength="100" placeholder="Votre identifiant LifeInvader" required></div>
+          <div class="reservation-field"><label for="people">Nombre de personnes</label><input id="people" type="number" min="1" max="50" placeholder="Ex. 4" required></div>
+          <div class="reservation-field"><label for="date">Date</label><input id="date" type="date" required></div>
+          <div class="reservation-field"><label for="time">Heure</label><input id="time" type="time" required></div>
+          <div class="reservation-field reservation-field-full">
+            <label for="message">Message / demande particulière</label>
+            <textarea id="message" maxlength="1000" placeholder="Une demande particulière ? Ce champ est facultatif."></textarea>
+            <div class="reservation-message-meta"><span>Facultatif</span><span><span id="messageCount">0</span>/1000</span></div>
+          </div>
+        </div>
+        <button id="reservationSubmit" class="reservation-submit" type="submit">Envoyer ma réservation</button>
+        <div id="reservationFeedback" class="reservation-feedback" role="status" aria-live="polite"></div>
+      </form>
+
+      <div id="reservationSuccess" class="reservation-success">
+        <div class="reservation-success-mark">✓</div>
+        <h2>Demande envoyée</h2>
+        <p>Votre réservation a bien été transmise. Son statut est actuellement <strong>En attente</strong>.</p>
+        <div id="reservationReference" class="reservation-reference"></div>
+        <p class="reservation-reference-help">Conservez cette référence : elle vous permettra de suivre votre réservation ci-dessous.</p>
+      </div>
+    </section>
+
+    <section class="reservation-track-card" aria-labelledby="trackTitle">
+      <div class="reservation-track-head">
+        <div>
+          <div class="kicker">SUIVI EN LIGNE</div>
+          <h2 id="trackTitle">Suivre ma réservation</h2>
+          <p>Saisissez la référence reçue lors de votre demande pour connaître son statut.</p>
+        </div>
+      </div>
+
+      <form id="reservationTrackForm" class="reservation-track-form">
+        <div class="reservation-field">
+          <label for="trackReference">Référence de réservation</label>
+          <input id="trackReference" type="text" maxlength="30" placeholder="Ex. HH-7K2P-9M4R" autocomplete="off" required>
+        </div>
+        <button id="trackSubmit" class="reservation-submit reservation-track-submit" type="submit">Rechercher</button>
+      </form>
+
+      <div id="trackFeedback" class="reservation-feedback" role="status" aria-live="polite"></div>
+
+      <div id="reservationTrackResult" class="reservation-track-result" aria-live="polite">
+        <div class="reservation-track-result-head">
+          <div class="reservation-track-result-icon" aria-hidden="true">✓</div>
+          <div>
+            <span class="reservation-track-label">RÉFÉRENCE DE RÉSERVATION</span>
+            <strong id="trackResultReference"></strong>
+          </div>
+          <span id="trackResultStatus" class="reservation-track-status"></span>
+        </div>
+        <div class="reservation-track-details">
+          <div class="reservation-track-detail"><span>DATE DE RÉSERVATION</span><strong id="trackResultDate"></strong></div>
+          <div class="reservation-track-detail"><span>HEURE PRÉVUE</span><strong id="trackResultTime"></strong></div>
+          <div class="reservation-track-detail"><span>NOMBRE DE PERSONNES</span><strong id="trackResultPeople"></strong></div>
+        </div>
+      </div>
+    </section>
   </div>
-</footer>
+</main>
+
+<script src="maintenance-check.js"></script>
 <script src="background-loader.js"></script>
 <script src="logo-loader.js"></script>
+<script>
+(function(){
+"use strict";
+const API_URL="https://thehenhouse-reservation.maxgamingdu4.workers.dev";
+const form=document.getElementById("reservationForm"),submit=document.getElementById("reservationSubmit"),feedback=document.getElementById("reservationFeedback"),success=document.getElementById("reservationSuccess"),ref=document.getElementById("reservationReference"),date=document.getElementById("date"),message=document.getElementById("message"),count=document.getElementById("messageCount");
+const trackForm=document.getElementById("reservationTrackForm"),trackReference=document.getElementById("trackReference"),trackSubmit=document.getElementById("trackSubmit"),trackFeedback=document.getElementById("trackFeedback"),trackResult=document.getElementById("reservationTrackResult");
+function today(){const n=new Date(),l=new Date(n.getTime()-n.getTimezoneOffset()*60000);return l.toISOString().slice(0,10)}
+function show(el,t,type){el.textContent=t||"";el.className="reservation-feedback"+(t?" show":"")+(type?" "+type:"")}
+function statusClass(status){
+  if(status==="Confirmée")return"confirmed";
+  if(status==="Refusée")return"refused";
+  if(status==="Annulée")return"cancelled";
+  return"pending";
+}
+function formatDate(value){
+  if(!value)return"—";
+  const parts=value.split("-");
+  return parts.length===3 ? parts[2]+"/"+parts[1]+"/"+parts[0] : value;
+}
+date.min=today();
+message.addEventListener("input",()=>count.textContent=message.value.length);
+
+form.addEventListener("submit",async e=>{
+ e.preventDefault();show(feedback,"","");
+ if(!form.checkValidity()){form.reportValidity();return}
+ const payload={name:document.getElementById("name").value.trim(),phone:document.getElementById("phone").value.trim(),lifeinvader:document.getElementById("lifeinvader").value.trim(),people:Number(document.getElementById("people").value),date:date.value,time:document.getElementById("time").value,message:message.value.trim()};
+ if(payload.date<today()){show(feedback,"La date ne peut pas être dans le passé.","error");return}
+ submit.disabled=true;submit.textContent="ENVOI EN COURS...";
+ try{
+  const response=await fetch(API_URL+"/reservations",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload)});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||!data.success)throw new Error(data.error||"Impossible d'envoyer la réservation.");
+  form.reset();count.textContent="0";form.hidden=true;success.classList.add("show");
+  const reference=data.reference||(data.reservation&&data.reservation.reference)||"";
+  ref.textContent=reference?"RÉFÉRENCE · "+reference:"STATUT · EN ATTENTE";
+  if(reference)trackReference.value=reference;
+ }catch(err){show(feedback,"❌ "+err.message,"error")}
+ finally{submit.disabled=false;submit.textContent="ENVOYER MA RÉSERVATION"}
+});
+
+trackForm.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const reference=trackReference.value.trim().toUpperCase();
+  trackResult.classList.remove("show");
+  show(trackFeedback,"","");
+  if(!reference){show(trackFeedback,"Veuillez saisir votre référence.","error");return}
+  trackSubmit.disabled=true;trackSubmit.textContent="RECHERCHE...";
+  try{
+    const response=await fetch(API_URL+"/reservations/track/"+encodeURIComponent(reference),{headers:{"Accept":"application/json"}});
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.success)throw new Error(data.error||"Réservation introuvable.");
+    const r=data.reservation||{};
+    document.getElementById("trackResultReference").textContent=r.reference||reference;
+    document.getElementById("trackResultDate").textContent=formatDate(r.date);
+    document.getElementById("trackResultTime").textContent=r.time||"—";
+    document.getElementById("trackResultPeople").textContent=(r.people??"—");
+    const status=document.getElementById("trackResultStatus");
+    status.textContent=r.status||"En attente";
+    status.className="reservation-track-status "+statusClass(r.status);
+    trackResult.classList.add("show");
+  }catch(err){show(trackFeedback,"❌ "+err.message,"error")}
+  finally{trackSubmit.disabled=false;trackSubmit.textContent="RECHERCHER"}
+});
+})();
+</script>
 </body>
 </html>
